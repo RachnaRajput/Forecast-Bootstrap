@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Forecast Search</title>
+
+
+    <!-- Bootstrap -->
+    <script src="http://openlayers.org/api/OpenLayers.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="forecasthw8.css">
+     
+   
+</head>
+
+<body id="idbody">
+    <script>
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId: '1516044308707799',
+                xfbml: true,
+                version: 'v2.5'
+            });
+        };
+
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {
+                return;
+            }
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    
+    <div class="container">
+         <label id="lblHeading">Forecast Search</label>
+        <div class="col-xs-12 col-lg-12  div_ctrl">
+        <form class="form-inline" role="form" id="myForm">
+             <div class="container" id="innerDiv">
+            <div class="row">
+            <div class="col-xs-12 col-lg-12">
+            <div class="col-lg-2">
+        <label for="lblStreetAddr" class="col-xs-10 col-xs-offset-1 col-lg-12 " id="lblStreetAddr">Street Address<span style="color:red;">*</span>:</label>
+                        <div class="col-xs-10 col-xs-offset-1 col-lg-12">
+                            <input type="text" class="form-control" name="idStreetAddr" id="idStreetAddr" placeholder="Address" >
+                        </div>
+            </div>
+             <div class="col-lg-2">
+            
+         <label for="lblCity" class="col-xs-10 col-xs-offset-1 col-lg-12" id="lblCity">City<span style="color:red;">*</span>:</label>
+                        <div class="col-xs-10 col-xs-offset-1 col-lg-12">
+                            <input type="text" name="idCity" class="form-control" id="idCity" placeholder="City" >
+        </div>
+            </div>
+             <div class="col-lg-2">
+       <label for="lblState" class="col-xs-10 col-xs-offset-1" id="lblState">State<span style="color:red;">*</span>:</label>
+                           <lable class="col-xs-10 col-xs-offset-1"><select id="idState" name="idState" class="form-control">
+    <option value= ""> Select your state</option>
+    <option value="AL">Alabama</option>
+	<option value="AK">Alaska</option>
+	<option value="AZ">Arizona</option>
+	<option value="AR">Arkansas</option>
+	<option value="CA">California</option>
+	<option value="CO">Colorado</option>
+	<option value="CT">Connecticut</option>
+	<option value="DE">Delaware</option>
+	<option value="DC">District Of Columbia</option>
+	<option value="FL">Florida</option>
+	<option value="GA">Georgia</option>
+	<option value="HI">Hawaii</option>
+	<option value="ID">Idaho</option>
+	<option value="IL">Illinois</option>
+	<option value="IN">Indiana</option>
+	<option value="IA">Iowa</option>
+	<option value="KS">Kansas</option>
+	<option value="KY">Kentucky</option>
+	<option value="LA">Louisiana</option>
+	<option value="ME">Maine</option>
+	<option value="MD">Maryland</option>
+	<option value="MA">Massachusetts</option>
+	<option value="MI">Michigan</option>
+	<option value="MN">Minnesota</option>
+	<option value="MS">Mississippi</option>
+	<option value="MO">Missouri</option>
+	<option value="MT">Montana</option>
+	<option value="NE">Nebraska</option>
+	<option value="NV">Nevada</option>
+	<option value="NH">New Hampshire</option>
+	<option value="NJ">New Jersey</option>
+	<option value="NM">New Mexico</option>
+	<option value="NY">New York</option>
+	<option value="NC">North Carolina</option>
+	<option value="ND">North Dakota</option>
+	<option value="OH">Ohio</option>
+	<option value="OK">Oklahoma</option>
+	<option value="OR">Oregon</option>
+	<option value="PA">Pennsylvania</option>
+	<option value="RI">Rhode Island</option>
+	<option value="SC">South Carolina</option>
+	<option value="SD">South Dakota</option>
+	<option value="TN">Tennessee</option>
+	<option value="TX">Texas</option>
+	<option value="UT">Utah</option>
+	<option value="VT">Vermont</option>
+	<option value="VA">Virginia</option>
+	<option value="WA">Washington</option>
+	<option value="WV">West Virginia</option>
+	<option value="WI">Wisconsin</option>
+	<option value="WY">Wyoming</option>
+                            
+            </select>   
+            </lable>
+</div>
+             <div class="col-lg-2">
+        <label class="col-xs-10 col-xs-offset-1" id="degree"> Degree<span style="color:red;">*</span>:</label>
+        <div class="col-xs-10 col-xs-offset-1  col-lg-12">
+  <label  class="col-xs-6 col-lg-7">
+                            <input type="radio" name="Degree"  id="DegreeId" value= "us" checked> Fahrenheit
+                            </label>
+                            <label  class="col-xs-5 col-lg-5">
+                            <input type="radio" name="Degree" id="DegreeId" value= "si"> Celsius
+                            </label>  
+        </div>
+            </div>
+             <div class="col-lg-3" style="margin-top:2%">
+        <div class="col-xs-10 col-xs-offset-3 col-lg-offset-6">
+        <button type="button" class="btn btn-default col-xs-5" id="idsearch"><span class="glyphicon glyphicon-search"></span> Search</button>
+                          <button type="reset" class="btn btn-default col-xs-5" id="idclear" onclick="myFunction()"><span class="glyphicon glyphicon-refresh"></span> Clear</button>
+        </div>
+            </div>
+             <div class="col-lg-3 col-lg-offset-8">
+        <div class="col-xs-12 col-lg-offset-2">
+        <label class="col-xs-5  col-xs-offset-1 col-lg-5 col-lg-offset-2" id="power">Powered by:</p>
+            </label>
+        <label class="col-xs-5 col-lg-5">
+      <div class= "img_forecast "> 
+                        <a href="http://forecast.io">
+                    <img class="pull-right " src="http://cs-server.usc.edu:45678/hw/hw8/images/forecast_logo.png" width="120" height="30" alt="Search" />
+                    </a>
+        </div> 
+            </label>
+              </div>
+        </div>
+             </div>
+            </div>
+            </div>
+          </form>
+           </div>
+<!--            </div>     -->
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<div id="idNavTabs">
+        <div class="container" id="idNavContainer" >
+                    <ul class="nav nav-tabs" role="tablist" id="myTab">
+                    <li role="presentation" class="active"><a href="#Tab1" data-toggle="tab">Right Now</a>
+                    </li>
+                    <li role="presentation"><a href="#Tab2" data-toggle="tab">Next 24 Hours</a>
+                    </li>
+                    <li role="presentation"><a href="#Tab3" data-toggle="tab">Next 7 Days</a>
+                    </li>
+                </ul>
+            
+            <div id="content_div">
+             <div class="tab-content">
+             <div role="tabpanel" class="tab-pane active" id="Tab1">
+                    <div class="table-responsive">
+                        <table class="control-group col-xs-12 col-md-6">
+                        <tbody>
+                            
+                            <tr>  <td id="idicon" align="left" rowspan="4"></td></tr>
+
+                                      <tr style= "height: 20px;">
+                                                  <td id="idsummary">N/A</td></tr>
+                            <tr style= "height: 20px;"><td id="idtemp_int" style="font-size: 60px; text-align: center;">N/A</td></tr>
+                           <tr  style= "height: 20px; text-align: center;"> <td ><label id="id_low_high_temp">N/A|N/A</label> <label><input type="image" class="fb_btn" src ="http://cs-server.usc.edu:45678/hw/hw8/images/fb_icon.png" id="fbcall" onclick="sharefb()" style="height:35px; float:right; padding-right:4%;"></input></label></td></tr>
+                            
+                           
+                            <tr style= "height: 50px; padding-left: 2%;">
+                                <td>Precipitation</td>
+                            <td id="idpreci" align="left">N/A</td>
+                            </tr>
+                            <tr style= "height: 50px; padding-left: 2%;">
+                            <td> Chances of Rain</td>
+                                <td id="chances_of_rain" align="left">N/A</td>
+                                
+                            </tr>
+                            <tr style= "height: 50px; padding-left: 2%;">
+                            <td> Wind Speed</td>
+                                <td id="idwindspeed" align="left">N/A</td>
+                                
+                            </tr>
+                            <tr style= "height: 50px; padding-left: 2%;">
+                            <td> Dew Point</td>
+                                <td id="iddewpoint" align="left">N/A</td>
+                                
+                            </tr>
+                            <tr style= "height: 50px; padding-left: 2%;">
+                            <td> Humidity</td>
+                                <td id="idhumidity" align="left">N/A</td>
+                                
+                            </tr>
+                            <tr style= "height: 50px; padding-left: 2%;">
+                            <td> Visibility</td>
+                                <td id="idvisibility" align="left">N/A</td>
+                                
+                            </tr>
+                            <tr style= "height: 50px; padding-left: 2%;">
+                            <td> Sunrise</td>
+                                <td id="idsunrise" align="left">N/A</td>
+                                
+                            </tr>
+                            <tr style= "height: 50px; padding-left: 2%;">
+                            <td> Sunset</td>
+                                <td id="idsunset" align="left">N/A</td>
+                                
+                            </tr>
+                       
+                        </tbody>
+                        </table>
+<!--
+                        <table>
+                         <tr>
+                            <td>
+                                 FOR MAP
+                        
+                            </td></tr>
+                        </table>
+-->
+<!--                <div id="map" style="height:100%; width:100%;">-->
+                 <div id="map" style="height:100%; width:100%;">
+                     
+
+                        </div>
+                           
+                    </div>
+                 </div>
+             <div role="tabpanel" class="tab-pane" id="Tab2">
+                     <div class="table-responsive1">
+                        <table class="table" id="table1">
+                        <tbody> 
+                            <tr>
+                                <td>Time</td><td>summary</td><td>cloud cover</td><td>temp</td><td>View Details</td>                                                             </tr>
+<!--
+                           
+-->
+
+                        </tbody>
+
+                         </table>
+            </div>                           
+                            
+                 </div>
+             <div role="tabpanel" class="tab-pane" id="Tab3">
+                     <div class="table-responsive3">
+                        
+                         
+                         <!-- Button trigger modal -->
+ <div class="tab3_div col-xs-12 col-lg-12">  
+    
+<button type="button" class="btn btn-primary btn-lg col-xs-12 col-lg-1" data-toggle="modal" data-target="#myModal" id="button1">
+  <table class="col-xs-12">
+      <tr><td id="idday1">N/A</td></tr>
+      <tr><td id="iddate1">N/A</td></tr>
+      <tr><td id="idicon_daily_11">N/A</td></tr>
+      <tr><td id="min_temp1">Min Temp</td></tr>
+      <tr><td id="idtemp_min1">N/A</td></tr>
+      <tr><td id="max_temp1">Max Temp</td></tr>
+      <tr><td id="idtemp_max1">N/A</td></tr>
+     </table>
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel1">N/A</h4>
+      </div>
+      <div class="modal-body">
+        
+              <div> <img id="img1" ></div>
+              <div><label id="day1">N/A </label><label id="idsummary1"></label></div>
+              <div id="tab3div1"><label id="sunrise_1">Sunrise Time</label> <br><label id="idsunrise11">N/A</label></div>
+              <div id="tab3div2"><label id="sunset_1">Sunset Time</label><br><label id="idsunset11">N/A</label></div>
+              <div id="tab3div3"><label id="humidity_1">Humidity</label><br><label id="idhumi_percent1">N/A</label></div>
+              <div id="tab3div4"><label id="wind1">Wind Speed</label><br><label id="idwind1">N/A</label></div>
+              <div id="tab3div5"><label id="visibi1">Visibility</label><br><label id="idvisi1">N/A</label></div>
+             <div id="tab3div6"><label id="press1">Pressure</label><br><label id="idpressure1"></label></div>
+<!--
+        <table style="width: 100%"><tr><td colspan="3" id="img1" ></td></tr>
+            <tr><td id="day1">N/A</td><td colspan= "3" id="idsummary1">N/A</td></tr>
+            <tr><th >Sunrise Time</th><th id="sunset_1">Sunset Time</th><th id="humidity_1">Humidity</th></tr>
+            <tr><td id="idsunrise11">N/A</td><td id="idsunset11">N/A</td><td id="idhumi_percent1">N/A</td></tr>
+            <tr><th id="wind1">Wind Speed</th><th id="visibi1">Visibility</th><th id="press1">Pressure</th></tr>
+            <tr><td id="idwind1">N/A</td><td id="idvisi1">N/A</td><td id="idpressure1">N/A</td></tr>
+            
+          </table>
+-->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+<!--        <button type="button" class="btn btn-primary">Save changes</button>-->
+      </div>
+    </div>
+  </div>
+</div>
+                         
+<!--------------------------------------------------------TAB 3 BUTTON 2-------------------------------------------------------------------------->
+    
+<button type="button" class="btn btn-primary btn-lg col-xs-12 col-lg-1" data-toggle="modal" data-target="#myModal2" id="button2">
+  <table class="col-xs-12">
+      <tr><td id="idday2">N/A</td></tr>
+      <tr><td id="iddate2">N/A</td></tr>
+      <tr><td id="idicon_daily_12">N/A</td></tr>
+      <tr><td id="min_temp2">Min Temp</td></tr>
+      <tr><td id="idtemp_min2">N/A</td></tr>
+      <tr><td id="max_temp2">Max Temp</td></tr>
+      <tr><td id="idtemp_max2">N/A</td></tr>
+     </table>
+</button>
+
+<!-- Modal -->
+ <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel2">N/A</h4>
+      </div>
+      <div class="modal-body">
+           <div> <img id="img2" ></div>
+              <div><label id="day2">N/A </label><label id="idsummary2"></label></div>
+              <div id="tab3div1"><label id="sunrise_2">Sunrise Time</label> <br><label id="idsunrise12">N/A</label></div>
+              <div id="tab3div2"><label id="sunset_2">Sunset Time</label><br><label id="idsunset12">N/A</label></div>
+              <div id="tab3div3"><label id="humidity_2">Humidity</label><br><label id="idhumi_percent2">N/A</label></div>
+              <div id="tab3div4"><label id="wind2">Wind Speed</label><br><label id="idwind2">N/A</label></div>
+              <div id="tab3div5"><label id="visibi2">Visibility</label><br><label id="idvisi2">N/A</label></div>
+             <div id="tab3div6"><label id="press2">Pressure</label><br><label id="idpressure2"></label></div>
+<!--
+        <table style="width: 100%"><tr><td  colspan="3" id="img2"></td></tr>
+            <tr><td id="day2">N/A</td><td colspan= "3" id="idsummary2">N/A</td></tr>
+            <tr><th id="sunrise_2">Sunrise Time</th><th id="sunset_2">Sunset Time</th><th id="humidity_2">Humidity</th></tr>
+            <tr><td id="idsunrise12">N/A</td><td id="idsunset12">N/A</td><td id="idhumi_percent2">N/A</td></tr>
+            <tr><th id="wind2">Wind Speed</th><th id="visibi2">Visibility</th><th id="press2">Pressure</th></tr>
+            <tr><td id="idwind2">N/A</td><td id="idvisi2">N/A</td><td id="idpressure2">N/A</td></tr>
+            
+          </table>
+-->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+<!--        <button type="button" class="btn btn-primary">Save changes</button>-->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ----------------------------------------------------------TAB 3 BUTTON 3---------------------------------------------->
+   <button type="button" class="btn btn-primary btn-lg col-xs-12 col-lg-1" data-toggle="modal" data-target="#myModal3" id="button3">
+  <table class="col-xs-12" >
+      <tr><td id="idday3">N/A</td></tr>
+      <tr><td id="iddate3">N/A</td></tr>
+      <tr><td id="idicon_daily_13">N/A</td></tr>
+      <tr><td id="min_temp3">Min Temp</td></tr>
+      <tr><td id="idtemp_min3">N/A</td></tr>
+      <tr><td id="max_temp3">Max Temp</td></tr>
+      <tr><td id="idtemp_max3">N/A</td></tr>
+     </table>
+</button>
+
+<!-- Modal -->
+ <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel3">N/A</h4>
+      </div>
+      <div class="modal-body">
+           <div> <img id="img3" ></div>
+              <div><label id="day3">N/A </label><label id="idsummary3"></label></div>
+              <div id="tab3div1"><label id="sunrise_3">Sunrise Time</label> <br><label id="idsunrise13">N/A</label></div>
+              <div id="tab3div2"><label id="sunset_3">Sunset Time</label><br><label id="idsunset13">N/A</label></div>
+              <div id="tab3div3"><label id="humidity_3">Humidity</label><br><label id="idhumi_percent3">N/A</label></div>
+              <div id="tab3div4"><label id="wind3">Wind Speed</label><br><label id="idwind3">N/A</label></div>
+              <div id="tab3div5"><label id="visibi3">Visibility</label><br><label id="idvisi3">N/A</label></div>
+             <div id="tab3div6"><label id="press3">Pressure</label><br><label id="idpressure3"></label></div>
+<!--
+        <table style="width: 100%"><tr><td colspan="3" id="img3"></td></tr>
+            <tr><td id="day3">N/A</td><td colspan="3" id="idsummary3">N/A</td></tr>
+            <tr><th id="sunrise_3">Sunrise Time</th><th id="sunset_3">Sunset Time</th><th id="humidity_3">Humidity</th></tr>
+            <tr><td id="idsunrise13">N/A</td><td id="idsunset13">N/A</td><td id="idhumi_percent3">N/A</td></tr>
+            <tr><th id="wind3">Wind Speed</th><th id="visibi3">Visibility</th><th id="press3">Pressure</th></tr>
+            <tr><td id="idwind3">N/A</td><td id="idvisi3">N/A</td><td id="idpressure3">N/A</td></tr>
+            
+          </table>
+-->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+<!--        <button type="button" class="btn btn-primary">Save changes</button>-->
+      </div>
+    </div>
+  </div>
+</div>
+<!-----------------------------------------------------------TAB 3 BUTTON 4-------------------------------------------------------------------------->
+ <button type="button" class="btn btn-primary btn-lg col-xs-12 col-lg-1" data-toggle="modal" data-target="#myModal4" id="button4">
+  <table class="col-xs-12">
+      <tr><td id="idday4">N/A</td></tr>
+      <tr><td id="iddate4">N/A</td></tr>
+      <tr><td id="idicon_daily_14">N/A</td></tr>
+      <tr><td id="min_temp4">Min Temp</td></tr>
+      <tr><td id="idtemp_min4">N/A</td></tr>
+      <tr><td id="max_temp4">Max Temp</td></tr>
+      <tr><td id="idtemp_max4">N/A</td></tr>
+     </table>
+</button>
+
+<!-- Modal -->
+ <div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel4">N/A</h4>
+      </div>
+      <div class="modal-body">
+           <div> <img id="img4" ></div>
+              <div><label id="day4">N/A </label><label id="idsummary4"></label></div>
+              <div id="tab3div1"><label id="sunrise_4">Sunrise Time</label> <br><label id="idsunrise14">N/A</label></div>
+              <div id="tab3div2"><label id="sunset_4">Sunset Time</label><br><label id="idsunset14">N/A</label></div>
+              <div id="tab3div3"><label id="humidity_4">Humidity</label><br><label id="idhumi_percent4">N/A</label></div>
+              <div id="tab3div4"><label id="wind4">Wind Speed</label><br><label id="idwind4">N/A</label></div>
+              <div id="tab3div5"><label id="visibi4">Visibility</label><br><label id="idvisi4">N/A</label></div>
+             <div id="tab3div6"><label id="press4">Pressure</label><br><label id="idpressure4"></label></div>
+<!--
+        <table style="width: 100%"><tr><td colspan="3" id="img4"></td></tr>
+            <tr><td id="day4">N/A</td><td colspan="3" id="idsummary4">N/A</td></tr>
+            <tr><th id="sunrise_4">Sunrise Time</th><th id="sunset_4">Sunset Time</th><th id="humidity_4">Humidity</th></tr>
+            <tr><td id="idsunrise14">N/A</td><td id="idsunset14">N/A</td><td id="idhumi_percent4">N/A</td></tr>
+            <tr><th id="wind4">Wind Speed</th><th id="visibi4">Visibility</th><th id="press4">Pressure</th></tr>
+            <tr><td id="idwind4">N/A</td><td id="idvisi4">N/A</td><td id="idpressure4">N/A</td></tr>
+            
+          </table>
+-->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+<!--        <button type="button" class="btn btn-primary">Save changes</button>-->
+      </div>
+    </div>
+  </div>
+</div>
+<!-----------------------------------------------------------TAB 3 BUTTON 5-------------------------------------------------------------------------->    
+  <button type="button" class="btn btn-primary btn-lg col-xs-12 col-lg-1" data-toggle="modal" data-target="#myModal5" id="button5">
+  <table class="col-xs-12">
+      <tr><td id="idday5">N/A</td></tr>
+      <tr><td id="iddate5">N/A</td></tr>
+      <tr><td id="idicon_daily_15">N/A</td></tr>
+      <tr><td id="min_temp5">Min Temp</td></tr>
+      <tr><td id="idtemp_min5">N/A</td></tr>
+      <tr><td id="max_temp5">Max Temp</td></tr>
+      <tr><td id="idtemp_max5">N/A</td></tr>
+     </table>
+</button>
+
+<!-- Modal   -->
+ <div class="modal fade" id="myModal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel5">N/A</h4>
+      </div>
+      <div class="modal-body">
+           <div> <img id="img5" ></div>
+              <div><label id="day5">N/A </label><label id="idsummary5"></label></div>
+              <div id="tab3div1"><label id="sunrise_5">Sunrise Time</label> <br><label id="idsunrise15">N/A</label></div>
+              <div id="tab3div2"><label id="sunset_5">Sunset Time</label><br><label id="idsunset15">N/A</label></div>
+              <div id="tab3div3"><label id="humidity_5">Humidity</label><br><label id="idhumi_percent5">N/A</label></div>
+              <div id="tab3div4"><label id="wind5">Wind Speed</label><br><label id="idwind5">N/A</label></div>
+              <div id="tab3div5"><label id="visibi5">Visibility</label><br><label id="idvisi5">N/A</label></div>
+             <div id="tab3div6"><label id="press5">Pressure</label><br><label id="idpressure5"></label></div>
+<!--
+        <table style="width: 100%"><tr><td colspan="3" id="img5"></td></tr>
+            <tr><td id="day5">N/A</td><td colspan="3" id="idsummary5">N/A</td></tr>
+            <tr><th id="sunrise_5">Sunrise Time</th><th id="sunset_5">Sunset Time</th><th id="humidity_4">Humidity</th></tr>
+            <tr><td id="idsunrise15">N/A</td><td id="idsunset15">N/A</td><td id="idhumi_percent5">N/A</td></tr>
+            <tr><th id="wind5">Wind Speed</th><th id="visibi5">Visibility</th><th id="press5">Pressure</th></tr>
+            <tr><td id="idwind5">N/A</td><td id="idvisi5">N/A</td><td id="idpressure5">N/A</td></tr>
+            
+          </table>
+-->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+<!--        <button type="button" class="btn btn-primary">Save changes</button>-->
+      </div>
+    </div>
+  </div>
+</div>                       
+<!-----------------------------------------------------------TAB 3 BUTTON 6-------------------------------------------------------------------------->    
+  <button type="button" class="btn btn-primary btn-lg col-xs-12 col-lg-1" data-toggle="modal" data-target="#myModal6" id="button6">
+  <table class="col-xs-12">
+      <tr><td id="idday6">N/A</td></tr>
+      <tr><td id="iddate6">N/A</td></tr>
+      <tr><td id="idicon_daily_16">N/A</td></tr>
+      <tr><td id="min_temp6">Min Temp</td></tr>
+      <tr><td id="idtemp_min6">N/A</td></tr>
+      <tr><td id="max_temp6">Max Temp</td></tr>
+      <tr><td id="idtemp_max6">N/A</td></tr>
+     </table>
+</button>
+
+<!-- Modal  -->
+ <div class="modal fade" id="myModal6" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel6">N/A</h4>
+      </div>
+      <div class="modal-body">
+           <div> <img id="img6" ></div>
+              <div><label id="day6">N/A </label><label id="idsummary6"></label></div>
+              <div id="tab3div1"><label id="sunrise_6">Sunrise Time</label> <br><label id="idsunrise16">N/A</label></div>
+              <div id="tab3div2"><label id="sunset_6">Sunset Time</label><br><label id="idsunset16">N/A</label></div>
+              <div id="tab3div3"><label id="humidity_6">Humidity</label><br><label id="idhumi_percent6">N/A</label></div>
+              <div id="tab3div4"><label id="wind6">Wind Speed</label><br><label id="idwind6">N/A</label></div>
+              <div id="tab3div5"><label id="visibi6">Visibility</label><br><label id="idvisi6">N/A</label></div>
+             <div id="tab3div6"><label id="press6">Pressure</label><br><label id="idpressure6"></label></div>
+<!--
+        <table style="width: 100%"><tr><td colspan="3" id="img6"></td></tr>
+            <tr><td id="day6" class=" col-xs-12">N/A</td><td colspan="3" id="idsummary6">N/A</td></tr>
+            <tr><th id="sunrise_6">Sunrise Time</th><th id="sunset_6">Sunset Time</th><th id="humidity_6">Humidity</th></tr>
+            <tr><td id="idsunrise16">N/A</td><td id="idsunset16">N/A</td><td id="idhumi_percent6">N/A</td></tr>
+            <tr><th id="wind6">Wind Speed</th><th id="visibi6">Visibility</th><th id="press6">Pressure</td></tr>
+            <tr><td id="idwind6">N/A</td><td id="idvisi6">N/A</td><td id="idpressure6">N/A</td></tr>
+            
+          </table>
+-->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+<!--        <button type="button" class="btn btn-primary">Save changes</button>-->
+      </div>
+    </div>
+  </div>
+</div>
+<!-----------------------------------------------------------TAB 3 BUTTON 7-------------------------------------------------------------------------->    
+  <button type="button" class="btn btn-primary btn-lg col-xs-12 col-lg-1" data-toggle="modal" data-target="#myModal7" id="button7">
+  <table class="col-xs-12">
+      <tr><td id="idday7">N/A</td></tr>
+      <tr><td id="iddate7">N/A</td></tr>
+      <tr><td id="idicon_daily_17">N/A</td></tr>
+      <tr><td id="min_temp7">Min Temp</td></tr>
+      <tr><td id="idtemp_min7">N/A</td></tr>
+      <tr><td id="max_temp7">Max Temp</td></tr>
+      <tr><td id="idtemp_max7">N/A</td></tr>
+     </table>
+</button>
+
+<!-- Modal style="width: 100%", colspan="3"  colspan="3" id="sunrise_4" id="sunset_4" id="humidity_4" id="wind4" id="visibi4" id="press4"                                        -->
+ <div class="modal fade" id="myModal7" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel7">N/A</h4>
+      </div>
+      <div class="modal-body">
+           <div> <img id="img7" ></div>
+              <div><label id="day7">N/A </label><label id="idsummary7"></label></div>
+              <div id="tab3div1"><label id="sunrise_7">Sunrise Time</label> <br><label id="idsunrise17">N/A</label></div>
+              <div id="tab3div2"><label id="sunset_7">Sunset Time</label><br><label id="idsunset17">N/A</label></div>
+              <div id="tab3div3"><label id="humidity_7">Humidity</label><br><label id="idhumi_percent7">N/A</label></div>
+              <div id="tab3div4"><label id="wind7">Wind Speed</label><br><label id="idwind7">N/A</label></div>
+              <div id="tab3div5"><label id="visibi7">Visibility</label><br><label id="idvisi7">N/A</label></div>
+             <div id="tab3div6"><label id="press7">Pressure</label><br><label id="idpressure7"></label></div>
+<!--
+        <table style="width: 100%"><tr><td colspan="3"  id="img7"></td></tr>
+            <tr><td id="day7">N/A</td><td colspan="3" id="idsummary7">N/A</td></tr>
+            <tr><th id="sunrise_7">Sunrise Time</th><th id="sunset_7">Sunset Time</th><th id="humidity_7">Humidity</th></tr>
+            <tr><td id="idsunrise17">N/A</td><td id="idsunset17">N/A</td><td id="idhumi_percent7">N/A</td></tr>
+            <tr><th id="wind7">Wind Speed</th><th id="visibi7">Visibility</th><th id="press7">Pressure</th></tr>
+            <tr><td id="idwind7">N/A</td><td id="idvisi7">N/A</td><td id="idpressure7">N/A</td></tr>
+            
+          </table>
+-->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+<!--        <button type="button" class="btn btn-primary">Save changes</button>-->
+      </div>
+    </div>
+  </div>
+     </div>                                               </div>
+                         
+    </div>
+    </div>                                   
+            </div>                           
+                            
+                 </div>
+             </div>
+    </div>    <!--navid-->
+       
+        
+        
+      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="jquery-1.11.1.js"></script>
+    <script src="jquery.validate.js"></script>
+<!--     Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<!--<script src="http://openlayers.org/api/OpenLayers.js"></script>-->
+     <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.7/jquery.validate.min.js"></script>
+     <script src="http://momentjs.com/downloads/moment.js"></script>
+    <script src="http://momentjs.com/downloads/moment.min.js"></script>
+    <script src="http://momentjs.com/downloads/moment-with-locales.js"></script>
+     <script src="http://momentjs.com/downloads/moment-with-locales.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.4.1/moment-timezone-with-data.js"></script>
+   
+        
+
+    <script>
+//              
+        var unit;   
+ $(document).ready(function(){
+      $('#idsearch').click(getData);
+                     
+              $("#myForm").validate({
+                  rules:{
+                    idStreetAddr: {required : true},
+                    idCity: {required: true},
+                   idState:{required: 
+                      function () {
+                   if ($("#idState option[value='']")) {
+                       return true;
+                   } else {
+                       return false;                    
+                 }}}
+                  },
+                  messages:{
+                    
+                    idStreetAddr:{required: "Please Enter the street address"},
+                    idCity: {required: "Please enter the city"},
+                    idState: {required: "Please select the state"}
+                    },
+                   });
+     $('#idclear').click(myFunction());
+      $('#fbcall').click(sharefb());
+});
+        
+        
+        
+        
+        function sharefb() {
+        
+            FB.ui({method: 'feed',
+            link: 'http://forecast.io/',
+            name: 'weather in' +city+ ',' +state,
+            description: des,
+            caption: 'WEATHER INFORMATION FROM FORECAST.IO',
+            picture: imgsrc
+                  },
+                  function(response)
+                  {
+                if(response){
+                    alert('Posted Successfully');
+                }else{
+                    alert('Not Posted');
+                }
+            });
+        }         
+        
+        
+         function tabmap(data01) {
+    
+    
+                        var lat = data01['latitude'];
+                        var lon = data01['longitude'];
+                       // $('#map').html("");
+                 var lonlat = new OpenLayers.LonLat(lat,lon);
+                        var map = new OpenLayers.Map("map");
+                        var mapnik = new OpenLayers.Layer.OSM();
+        
+                        var layer_cloud = new OpenLayers.Layer.XYZ(
+                                "clouds",
+                                "http://${s}.tile.openweathermap.org/map/clouds/${z}/${x}/${y}.png",
+                            {
+                                isBaseLayer: false,
+                                opacity: 0.7,
+                                sphericalMercator: true
+                            }
+                        );
+                        var layer_precipitation = new OpenLayers.Layer.XYZ(
+                                "precipitation",
+                                "http://${s}.tile.openweathermap.org/map/precipitation/${z}/${x}/${y}.png",
+                            {
+                                isBaseLayer: false,
+                                opacity: 0.7,
+                                sphericalMercator: true
+                            }
+                        );
+                        map.addLayers([mapnik, layer_precipitation, layer_cloud]);
+                        map.addControl(new OpenLayers.Control.LayerSwitcher());     
+                    
+                        var lonlat = new OpenLayers.LonLat(lon, lat).transform(
+                            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+                            map.getProjectionObject() // to Spherical Mercator Projection
+                        );
+                        map.setCenter( lonlat, 8 );        
+                        
+                        var markers = new OpenLayers.Layer.Markers( "Markers" );
+                        map.addLayer(markers);
+                        markers.addMarker(new OpenLayers.Marker(lonlat));
+                        
+                    }
+        
+        
+        
+     function myFunction()
+        {
+            $('#idNavTabs').hide(); 
+        }
+        
+//  
+        function getData(e) {
+             e.preventDefault();
+           $('#idNavTabs').hide();
+//        
+            $('#myForm').validate();
+            if ($('#myForm').valid()) {
+
+                var street= $('#idStreetAddr').val();
+                var city = $('#idCity').val();
+                var state = $('#idState').val();
+                 unit = $("input:radio[id=DegreeId]:checked").val()
+
+                
+                //make AJAX call 
+                $.ajax({
+                    url: 'http://myapp-env13566.elasticbeanstalk.com/',
+                    data:{street: street,
+                          city: city,
+                          state: state,
+                           unit: unit,
+                         },
+                    type: 'GET',
+                  success: buildPanel,
+                    error: function() {
+                        console.log("Error in ajax");
+                    }
+                });
+           
+            } else {
+                //document.write("no valid output");
+                return false;
+            }
+        }     
+    
+ function buildPanel(data){
+             if (data.success == 0) {
+                
+               
+//                window.precipvalue = "";
+//                window.chances_of_rain = "";
+               document.write("ERROR..!!!!!!!!!");
+                               return false; }
+                                
+            else{
+//                alert("data");
+               // alert(data);
+                //alert((JSON.parse(data))['data1'])
+                var data11 = (JSON.parse(data))['data1'];
+                var data02 = ((JSON.parse(data))['data2']);
+                var data03 = ((JSON.parse(data))['data3']);
+var sum, temp_min, preci, preci_val, preci1, ico2, ico4;
+data01 = JSON.parse(data11);
+ tabmap(data01);
+sum = data01['currently']['summary'];
+$('#idsummary').html(sum +" in "+$('#idCity').val()+", "+$('#idState').val());
+                
+var tempe = data01['currently']['temperature'];  
+var temp_int = parseInt(tempe);
+if(unit == 'us'){
+   // alert(unit);
+  $('#idtemp_int').html(temp_int+"<sup><sup>o</sup>F</sup>");}
+
+else{
+   //  alert(unit + "2");
+    $('#idtemp_int').html(temp_int+"<sup><sup>o</sup>C</sup>");
+            }
+            
+            
+//var temp_int= (string)(intval($tempe));
+var temp_min = data01['daily']['data'][0]['temperatureMin'];  
+var temp_min_int =  parseInt(temp_min);
+//////$int_temp_min = (string)(intval($temp_min));
+////////echo "min temperature: $int_temp_min";
+var temp_max = data01['daily']['data'][0]['temperatureMax']; 
+var temp_max_int= parseInt(temp_max);
+//                var l_temp = '<style color="blue">L:'+temp_min_int+'</style>';
+ $('#id_low_high_temp').html("L:"+temp_min_int+" | H:"+ temp_max_int );
+//                $('#id_low_high_temp').html(l_temp);
+          
+ preci = data01['currently']['precipIntensity'];
+ var preci1 = preci/25.4;
+if(unit == 'us')
+{
+if(preci >=0 && preci<0.002)
+    preci_val= "none";
+else if(preci >=0.002 && preci<0.017)
+   preci_val= "Very Light";
+else if(preci >=0.017 && preci<0.1)
+    preci_val= "Light";
+else if(preci >=0.1 && preci<0.4)
+    preci_val= "Moderate";
+else if(preci >=0.4)
+    preci_val= "Heavy";
+else
+    preci_val= "Wrong data";
+}
+ else
+{
+if(preci1 >=0 && preci<0.002)
+    preci_val= "none";
+else if(preci >=0.002 && preci<0.017)
+   preci_val= "Very Light";
+else if(preci >=0.017 && preci<0.1)
+    preci_val= "Light";
+else if(preci >=0.1 && preci<0.4)
+    preci_val= "Moderate";
+else if(preci >=0.4)
+    preci_val= "Heavy";
+else
+    preci_val= "Wrong data";
+            
+            }
+$('#idpreci').html(preci_val);
+            
+//                     
+var chance_of_rain = data01['currently']['precipProbability'];
+var rain_percent = chance_of_rain *100;
+$('#chances_of_rain').html(rain_percent+"%");
+////            
+////
+var wind_speed = data01['currently']['windSpeed'];
+var wind_speed_float= parseFloat(wind_speed).toFixed(2);
+if(unit == 'us')
+     $('#idwindspeed').html(wind_speed_float+"mph");
+else
+     $('#idwindspeed').html(wind_speed_float+"m/s");
+//     
+////    //alert(wind_speed_float);
+////            
+var hum = data01['currently']['humidity'];
+var hum_percent= hum*100;
+$('#idhumidity').html(hum_percent+"%");   
+////            
+////            
+var dew = data01['currently']['dewPoint'];            
+var dew_float= parseFloat(dew).toFixed(2);
+if(unit == 'us')     
+$('#iddewpoint').html(dew_float+"<sup>o</sup>F");
+else
+$('#iddewpoint').html(dew_float+"<sup>o</sup>C");   
+
+
+$('#idsunrise').html(data02);
+ $('#idsunset').html(data03);           
+//            
+ var visi = data01['currently']['visibility'];
+var visi_float = parseFloat(visi).toFixed(2);
+ if(unit == 'us')
+$('#idvisibility').html(visi_float+"mi");
+else
+$('#idvisibility').html(visi_float+"km");
+               
+          
+var ico1 = data01['currently']['icon'];
+     switch(ico1)
+     {
+  case "clear-day" : ico2 = "http://cs-server.usc.edu:45678/hw/hw8/images/clear.png";
+    break;
+    case "clear-night" : ico2 = "http://cs-server.usc.edu:45678/hw/hw8/images/clear_night.png";
+        break;
+    case "rain" : ico2= "http://cs-server.usc.edu:45678/hw/hw8/images/rain.png";
+        break;
+    case "snow" : ico2= "http://cs-server.usc.edu:45678/hw/hw8/images/snow.png";
+        break;
+    case "sleet" : ico2= "http://cs-server.usc.edu:45678/hw/hw8/images/sleet.png";
+        break;
+    case "wind" : ico2= "http://cs-server.usc.edu:45678/hw/hw8/images/wind.png";
+        break;
+    case "fog" : ico2= "http://cs-server.usc.edu:45678/hw/hw8/images/fog.png";
+        break;
+        case "cloudy" : ico2= "http://cs-server.usc.edu:45678/hw/hw8/images/cloudy.png";
+        break;  
+    case "partly-cloudy-day" :ico2= "http://cs-server.usc.edu:45678/hw/hw8/images/cloud_day.png";
+        break;
+    case "partly-cloudy-night" : ico2= "http://cs-server.usc.edu:45678/hw/hw8/images/cloud_night.png"; 
+        break;
+        
+    default:
+        document.write("wrong data");
+}
+ $('#idicon').html("<img src =\""+ico2+"\" style=\"height: 125px; padding-top: 15px;padding-left: 10%;\">");     
+                
+//--------------------------------------------------------------------MAP--------------------------------------------------------------------
+//    function init()
+//{
+//
+//
+//    //Center of map
+//    var lat = 34.0306826; 
+//    var lon = -118.2862195;
+//    var lonlat = new OpenLayers.LonLat(lon, lat);
+//        var map = new OpenLayers.Map("basicMap");
+//    // Create overlays
+//    //  OSM
+//        var mapnik = new OpenLayers.Layer.OSM();
+//    var layer_cloud = new OpenLayers.Layer.XYZ(
+//        "clouds",
+//        "http://${s}.tile.openweathermap.org/map/clouds/${z}/${x}/${y}.png",
+//        {
+//            isBaseLayer: false,
+//            opacity: 0.7,
+//            sphericalMercator: true
+//
+//        }
+//    );
+//
+//    var layer_precipitation = new OpenLayers.Layer.XYZ(
+//        "precipitation",
+//        "http://${s}.tile.openweathermap.org/map/precipitation/${z}/${x}/${y}.png",
+//        {
+//            isBaseLayer: false,
+//            opacity: 0.7,
+//            sphericalMercator: true
+//        }
+//    );
+//
+//
+//    map.addLayers([mapnik, layer_precipitation, layer_cloud]);
+//    map.setCenter( lonlat, 3);
+//
+//
+//}
+//
+// var _gaq = _gaq || [];
+//  _gaq.push(['_setAccount', 'UA-31601618-1']);
+//  _gaq.push(['_setDomainName', 'openweathermap.org']);
+//  _gaq.push(['_trackPageview']);
+//  (function() {
+//    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+//    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+//    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+//  })();
+//............................................................2nd tab....................................................................
+if(unit == 'us')
+{
+        var table24 = '<table><tr style="background-color: rgb(53,126,189);"><td>Time</td><td>summary</td><td>cloud cover</td><td>temp (<sup>o</sup>F)</td><td data-toggle="true">View Details</td></tr>';
+  for (var i = 0; i < 24; i += 1) {
+    var hourly_time = data01['hourly']['data'][i]['time'];
+      
+     var timezone1 = data01['timezone']; 
+    var hourly_time = data01['hourly']['data'][i]['time'];
+      var time1 = moment.unix(hourly_time);
+    
+      var local = moment.tz(time1, "America/Los Angeles");
+      var time1_1 = time1.tz(timezone1).format('hh:mm A');
+      hourly_time = time1_1;
+      
+var ico3 = data01['hourly']['data'][i]['icon'];
+    //alert(ico3);
+      switch(ico3)
+        {
+//            case "clear-day" :
+//                document.getElementById("myImg").src = "hackanm.gif";     
+case "clear-day" : ico4 = "http://cs-server.usc.edu:45678/hw/hw8/images/clear.png";
+        break;
+    case "clear-night" : ico4= "http://cs-server.usc.edu:45678/hw/hw8/images/clear_night.png";
+        break;
+    case "rain" : ico4= "http://cs-server.usc.edu:45678/hw/hw8/images/rain.png";
+        break;
+    case "snow" : ico4= "http://cs-server.usc.edu:45678/hw/hw8/images/snow.png";
+        break;
+    case "sleet" : ico4= "http://cs-server.usc.edu:45678/hw/hw8/images/sleet.png"; 
+        break;
+    case "wind" : ico4= "http://cs-server.usc.edu:45678/hw/hw8/images/wind.png";
+        break;
+    case "fog" : ico4= "http://cs-server.usc.edu:45678/hw/hw8/images/fog.png";
+        break;
+        case "cloudy": ico4= "http://cs-server.usc.edu:45678/hw/hw8/images/cloudy.png";
+        break;  
+            case "partly-cloudy-day": ico4= "http://cs-server.usc.edu:45678/hw/hw8/images/cloud_day.png";
+        break;
+    case "partly-cloudy-night" : ico4= "http://cs-server.usc.edu:45678/hw/hw8/images/cloud_night.png";
+        break;
+       
+    default:
+                ico4 = "wrong data";
+       // document.write("wrong data");
+}
+   
+
+  var cloudcover= data01['hourly']['data'][i]['cloudCover'];
+  var cloud_percent = cloudcover * 100;
+        
+  var hourly_temp= data01['hourly']['data'][i]['temperature'];
+  var hourly_temp_float = parseFloat(hourly_temp).toFixed(2);             
+                
+var hourly_wind = data01['hourly']['data'][i]['windSpeed'];
+               
+var hourly_humidity = data01['hourly']['data'][i]['humidity'];
+               
+var hourly_humidity_percent = hourly_humidity *100;
+
+var hourly_visibility = data01['hourly']['data'][i]['visibility'];
+                
+var hourly_pressure = data01['hourly']['data'][i]['pressure'];
+      
+      
+      table24 += '<tr><td>' + hourly_time +'</td><td><img class="ico4" src=' + ico4 +'></td><td>' +cloud_percent+"%"+'</td><td>' + hourly_temp_float + '</td><td><span class="glyphicon glyphicon-plus" data-toggle="collapse" data-target="#row1'+i+'" aria-expanded="false" aria-controls= "#row1'+i+'" aria-hidden="true"></span></td></tr>';
+    table24 += '<tr class="collapse" id="row1'+i+'" style="background-color:#E0E0E0"><td colspan="5">';
+     table24 += '<div class="table-responsive1"><table class"table table striped"><tr style="background-color:white"><th style="text-align:center; width:19%;">Wind</th><th style="text-align:center; widht:28%;">Humidity</th><th style="text-align:center; width: 48%;">Visibility</th><th style="text-align:center; width: 30%;">Pressure</th></tr>';
+    table24 += '<tr style="background: #E0E0E0;"><td style="text-align:center">' + hourly_wind + '</td><td style="text-align:center">'+hourly_humidity_percent+"%"+'</td><td style="text-align:center">' + hourly_visibility +'</td><td style="text-align:center">'+hourly_pressure+'</td></tr>';      
+ table24 += '</table>'; 
+      
+
+                $("#table1").html(table24);
+
+         
+                
+  }
+}
+                else
+{
+        var table24 = '<table><tr style="background-color: rgb(53,126,189);"><td>Time</td><td>summary</td><td>cloud cover</td><td>temp (<sup>o</sup>C)</td><td data-toggle="true">View Details</td></tr>';
+  for (var i = 0; i < 24; i += 1) {
+      
+
+     var timezone1 = data01['timezone']; 
+    var hourly_time = data01['hourly']['data'][i]['time'];
+      var time1 = moment.unix(hourly_time);
+    
+      var local = moment.tz(time1, "America/Los Angeles");
+      var time1_1 = time1.tz(timezone1).format('hh:mm A');
+      hourly_time = time1_1;
+var ico3 = data01['hourly']['data'][i]['icon'];
+    //alert(ico3);
+      switch(ico3)
+        {
+//            case "clear-day" :
+//                document.getElementById("myImg").src = "hackanm.gif";     
+case "clear-day" : ico4 = "http://cs-server.usc.edu:45678/hw/hw8/images/clear.png";
+        break;
+    case "clear-night" : ico4= "http://cs-server.usc.edu:45678/hw/hw8/images/clear_night.png";
+        break;
+    case "rain" : ico4= "http://cs-server.usc.edu:45678/hw/hw8/images/rain.png";
+        break;
+    case "snow" : ico4= "http://cs-server.usc.edu:45678/hw/hw8/images/snow.png";
+        break;
+    case "sleet" : ico4= "http://cs-server.usc.edu:45678/hw/hw8/images/sleet.png"; 
+        break;
+    case "wind" : ico4= "http://cs-server.usc.edu:45678/hw/hw8/images/wind.png";
+        break;
+    case "fog" : ico4= "http://cs-server.usc.edu:45678/hw/hw8/images/fog.png";
+        break;
+        case "cloudy": ico4= "http://cs-server.usc.edu:45678/hw/hw8/images/cloudy.png";
+        break;  
+            case "partly-cloudy-day": ico4= "http://cs-server.usc.edu:45678/hw/hw8/images/cloud_day.png";
+        break;
+    case "partly-cloudy-night" : ico4= "http://cs-server.usc.edu:45678/hw/hw8/images/cloud_night.png";
+        break;
+       
+    default:
+                ico4 = "wrong data";
+       // document.write("wrong data");
+}
+   
+
+  var cloudcover= data01['hourly']['data'][i]['cloudCover'];
+  var cloud_percent = cloudcover * 100;
+        
+  var hourly_temp= data01['hourly']['data'][i]['temperature'];
+  var hourly_temp_float = parseFloat(hourly_temp).toFixed(2);             
+                
+var hourly_wind = data01['hourly']['data'][i]['windSpeed'];
+               
+var hourly_humidity = data01['hourly']['data'][i]['humidity'];
+               
+var hourly_humidity_percent = hourly_humidity *100;
+
+var hourly_visibility = data01['hourly']['data'][i]['visibility'];
+                
+var hourly_pressure = data01['hourly']['data'][i]['pressure'];
+      
+      
+      table24 += '<tr><td>' + hourly_time +'</td><td><img class="ico4" src=' + ico4 +'></td><td>' +cloud_percent+"%"+'</td><td>' + hourly_temp_float + '</td><td><span class="glyphicon glyphicon-plus" data-toggle="collapse" data-target="#row1'+i+'" aria-expanded="false" aria-controls= "#row1'+i+'" aria-hidden="true"></span></td></tr>';
+    table24 += '<tr class="collapse" id="row1'+i+'" style="background-color:#E0E0E0"><td colspan="5">';
+     table24 += '<div class="table-responsive1"><table class"table table striped"><tr style="background-color:white"><th style="text-align:center; width:19%;">Wind</th><th style="text-align:center; widht:28%;">Humidity</th><th style="text-align:center; width: 48%;">Visibility</th><th style="text-align:center; width: 30%;">Pressure</th></tr>';
+    table24 += '<tr style="background: #E0E0E0;"><td style="text-align:center">' + hourly_wind + '</td><td style="text-align:center">'+hourly_humidity_percent+"%"+'</td><td style="text-align:center">' + hourly_visibility +'</td><td style="text-align:center">'+hourly_pressure+'</td></tr>';      
+ table24 += '</table>'; 
+      
+
+                $("#table1").html(table24);
+
+         
+                
+  }
+}
+ //----------------------------------------------------------------------Tab3--------------------------------------------------------------            
+
+       for( var k=1;k<8;k++)  {  
+         var day1= data01['daily']['data'][k]['time'];
+         var date = Date.parse(day1);
+        var date1 = new Date(day1*1000);
+         var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+         var dayOfWeek = days[date1.getDay()]  
+       // alert(dayOfWeek);
+        $('#idday'+k).html(dayOfWeek);
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+        var mon1 = months[date1.getMonth()]
+        var date_digit1 = date1.getDate();
+//                alert(date_digit1);
+        $('#iddate'+k).html(mon1+" "+ date_digit1);
+              
+                
+            var icon_daily1= data01['daily']['data'][k]['icon'];
+            var icon_daily11;
+             switch(icon_daily1)
+        {  
+    case "clear-day" : icon_daily11 = "http://cs-server.usc.edu:45678/hw/hw8/images/clear.png";
+        break;
+    case "clear-night" : icon_daily11= "http://cs-server.usc.edu:45678/hw/hw8/images/clear_night.png";
+        break;
+    case "rain" : icon_daily11= "http://cs-server.usc.edu:45678/hw/hw8/images/rain.png";
+        break;
+    case "snow" : icon_daily11= "http://cs-server.usc.edu:45678/hw/hw8/images/snow.png";
+        break;
+    case "sleet" : icon_daily11= "http://cs-server.usc.edu:45678/hw/hw8/images/sleet.png"; 
+        break;
+    case "wind" : icon_daily11= "http://cs-server.usc.edu:45678/hw/hw8/images/wind.png";
+        break;
+    case "fog" : icon_daily11= "http://cs-server.usc.edu:45678/hw/hw8/images/fog.png";
+        break;
+    case "cloudy": icon_daily11= "http://cs-server.usc.edu:45678/hw/hw8/images/cloudy.png";
+        break;  
+    case "partly-cloudy-day": icon_daily11= "http://cs-server.usc.edu:45678/hw/hw8/images/cloud_day.png";
+        break;
+    case "partly-cloudy-night" : icon_daily11= "http://cs-server.usc.edu:45678/hw/hw8/images/cloud_night.png";
+        break;   
+    default:
+         icon_daily11 = "wrong data";    
+}
+ $('#idicon_daily_1'+k).html("<img id= idicon_daily11 src =\""+icon_daily11+"\">");   
+           
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~           
+             var icon_daily1_1= data01['daily']['data'][k]['icon'];
+            var icon_daily111;
+             switch(icon_daily1)
+        {  
+    case "clear-day" : icon_daily111 = "http://cs-server.usc.edu:45678/hw/hw8/images/clear.png";
+        break;
+    case "clear-night" : icon_daily111= "http://cs-server.usc.edu:45678/hw/hw8/images/clear_night.png";
+        break;
+    case "rain" : icon_daily111= "http://cs-server.usc.edu:45678/hw/hw8/images/rain.png";
+        break;
+    case "snow" : icon_daily111= "http://cs-server.usc.edu:45678/hw/hw8/images/snow.png";
+        break;
+    case "sleet" : icon_daily111= "http://cs-server.usc.edu:45678/hw/hw8/images/sleet.png"; 
+        break;
+    case "wind" : icon_daily111= "http://cs-server.usc.edu:45678/hw/hw8/images/wind.png";
+        break;
+    case "fog" : icon_daily111= "http://cs-server.usc.edu:45678/hw/hw8/images/fog.png";
+        break;
+    case "cloudy": icon_daily111= "http://cs-server.usc.edu:45678/hw/hw8/images/cloudy.png";
+        break;  
+    case "partly-cloudy-day": icon_daily111= "http://cs-server.usc.edu:45678/hw/hw8/images/cloud_day.png";
+        break;
+    case "partly-cloudy-night" : icon_daily111= "http://cs-server.usc.edu:45678/hw/hw8/images/cloud_night.png";
+        break;   
+    default:
+         icon_daily111 = "wrong data";    
+}
+ //$('#idicon_daily_1'+k).html("<img id= idicon_daily111 src =\""+icon_daily111+"\">");   
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~           
+           
+       
+//            
+         var temp_min1= data01['daily']['data'][k]['temperatureMin'];
+           if(unit == 'us')
+         $('#idtemp_min'+k).html(temp_min1+"<sup>o</sup>F"); 
+           else
+        $('#idtemp_min'+k).html(temp_min1+"<sup>o</sup>C"); 
+            
+        var temp_max1= data01['daily']['data'][k]['temperatureMax'];
+           if(unit == 'us')
+         $('#idtemp_max'+k).html(temp_max1+"<sup>o</sup>F");
+           else
+        $('#idtemp_max'+k).html(temp_max1+"<sup>o</sup>C"); 
+       
+//        
+////-------------------TAB 3 body--------------
+         $('#myModalLabel'+k).html("Weather in "+$('#idCity').val()+" on "+mon1+" "+ date_digit1);
+          $('#img'+k).html("<img id=idicon_daily111 src =\""+icon_daily111+"\">");  
+           $('#day'+k).html(dayOfWeek+":"); 
+            var sum1 = data01['daily']['data'][k]['summary'];
+            $('#idsummary'+k).html(sum1);
+//          //  ---------time sunrise----------------
+           
+//             var timezone1 = data01['timezone']; 
+//    var ss1 = data01['daily']['data'][k]['sunsetTime'];
+//      var time1 = moment.unix(ss1);
+//      var local = moment.tz(time1, "America/Los Angeles");
+//      var time1_1 = time1.tz(timezone1).format('hh:mm A');
+//      var sunset01 = time1_1;
+//          $('#idsunset1'+k).html(sunset01); 
+           
+             var timezone1 = data01['timezone']; 
+    var sr1 = data01['daily']['data'][k]['sunriseTime'];
+      var time1 = moment.unix(sr1);
+      var local = moment.tz(time1, "America/Los Angeles");
+      var time1_1 = time1.tz(timezone1).format('hh:mm A');
+      var sunrise01 = time1_1;
+          $('#idsunrise1'+k).html(sunrise01); 
+           
+
+//      //-----------------time sunset---------------------  
+           
+           
+     var timezone1 = data01['timezone']; 
+    var ss1 = data01['daily']['data'][k]['sunsetTime'];
+      var time1 = moment.unix(ss1);
+      var local = moment.tz(time1, "America/Los Angeles");
+      var time1_1 = time1.tz(timezone1).format('hh:mm A');
+      var sunset01 = time1_1;
+          $('#idsunset1'+k).html(sunset01); 
+
+    //---------------------------------------------------------
+            var humi1 = data01['daily']['data'][k]['humidity'];
+            var humi_percent1 = humi1*100;
+            $('#idhumi_percent'+k).html(humi_percent1+"%");
+            var wind1 = data01['daily']['data'][k]['windSpeed'];
+            if(unit == 'us')
+                $('#idwind'+k).html(wind1+"mph");
+            else
+                 $('#idwind'+k).html(wind1+"ms");
+            var visi1 = data01['daily']['data'][k]['visibility'];
+                if(unit == 'us')
+            $('#idvisi'+k).html(visi1+"mi");
+                else
+             $('#idvisi'+k).html(visi1+"km");
+                    
+            var pressure1 = data01['daily']['data'][k]['pressure'];
+             if(unit == 'us')   
+            $('#idpressure'+k).html(pressure1+"mb");
+                else
+            $('#idpressure'+k).html(pressure1+"kPa");      
+       } //forloop
+//            
+////---------------------------------------------------------------TAB 3, BUTTON 2-------------------------------------------------------------       
+       
+//                 
+       }
+     $('#idNavTabs').show();
+     
+//      $('#idclear').click(){
+//       $('#idNavTabs').hide(); 
+//      }
+ }
+        </script>          
+                 
+    
+</div>
+    
+        </body>
+    </html>
